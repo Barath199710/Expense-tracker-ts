@@ -110,14 +110,11 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
       amount: parseFloat(formData.amount),
       category: formData.category,
       date: formData.date,
-      ...(formData.note.trim() ? { note: formData.note.trim() } : {}),
+      note: formData.note.trim() ? formData.note.trim() : undefined,
     }
 
     onSubmit(payload)
-
-    if (!editingExpense) {
-      setFormData(defaultFormData)
-    }
+    setFormData(defaultFormData)
   }
 
   return (

@@ -56,15 +56,19 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
   expense,
   onDelete,
   onEdit,
+  isEditing = false,
 }) => {
   return (
-    <div className="expense-card group">
+    <div className={`expense-card group ${isEditing ? 'card-editing-active' : ''}`}>
       <div className="expense-card-header">
         <div className="expense-card-main-info">
-          <span className={`category-badge ${getCategoryClass(expense.category)}`}>
-            {getCategoryIcon(expense.category)}
-            <span>{expense.category}</span>
-          </span>
+          <div className="flex items-center gap-2">
+            <span className={`category-badge ${getCategoryClass(expense.category)}`}>
+              {getCategoryIcon(expense.category)}
+              <span>{expense.category}</span>
+            </span>
+            {isEditing && <span className="editing-pill">Editing Now</span>}
+          </div>
           <h3 className="expense-title">{expense.title}</h3>
         </div>
         <div className="expense-amount-tag">

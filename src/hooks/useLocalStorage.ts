@@ -1,5 +1,5 @@
 // src/hooks/useLocalStorage.ts
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 /**
  * Generic custom hook for persisting state in localStorage with full type safety.
@@ -22,15 +22,26 @@ function useLocalStorage<T>(
     }
   })
 
-  const setValue = (value: T | ((prev: T) => T)): void => {
-    try {
-      const valueToStore = value instanceof Function ? value(stored) : value
-      setStored(valueToStore)
-      localStorage.setItem(key, JSON.stringify(valueToStore))
-    } catch (error) {
-      console.warn(`Error writing to localStorage key "${key}":`, error)
-    }
-  }
+  // Use functional state updater with useCallback for reliable state synchronization
+  const setValue = useCallback(
+    (value: T | ((prev: T) => T)): void => {
+      try {
+        setStored(prevStored => {
+          const valueToStore =
+            value instanceof Function ? value(prevStored) : value
+          try {
+            localStorage.setItem(key, JSON.stringify(valueToStore))
+          } catch (error) {
+            console.warn(`Error writing to localStorage key "${key}":`, error)
+          }
+          return valueToStore
+        })
+      } catch (error) {
+        console.warn(`Error in useLocalStorage setValue for "${key}":`, error)
+      }
+    },
+    [key]
+  )
 
   return [stored, setValue]
 }

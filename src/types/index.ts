@@ -84,18 +84,27 @@ export interface ExpenseCardProps {
   expense: Expense
   onDelete: (id: number) => void
   onEdit?: (expense: Expense) => void
+  isEditing?: boolean
 }
 
 export interface ExpenseListProps {
   expenses: Expense[]
   onDelete: (id: number) => void
   onEdit: (expense: Expense) => void
+  editingExpenseId?: number | null
 }
 
 export interface ExpenseFormProps {
   onSubmit: (expenseData: Omit<Expense, 'id'>) => void
   editingExpense: Expense | null
   onCancelEdit: () => void
+}
+
+export interface EditModalProps {
+  expense: Expense | null
+  isOpen: boolean
+  onClose: () => void
+  onSave: (id: number, data: Omit<Expense, 'id'>) => void
 }
 
 export interface FilterBarProps {

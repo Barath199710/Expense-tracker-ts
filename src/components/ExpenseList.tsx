@@ -8,6 +8,7 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
   expenses,
   onDelete,
   onEdit,
+  editingExpenseId = null,
 }) => {
   if (expenses.length === 0) {
     return (
@@ -42,6 +43,7 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
             expense={expense}
             onDelete={onDelete}
             onEdit={onEdit}
+            isEditing={expense.id === editingExpenseId}
           />
         ))}
       </div>
